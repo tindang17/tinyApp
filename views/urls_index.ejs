@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>TinyApp</title>
+</head>
+<body>
+  <header></header>
+    <ul>
+    <% for(let item in urls) { %>
+      <li>
+      <%= item %> : <%= urls[item] %> : <a href="">Update</a>
+      </li>
+    <% } %>
+    </ul>
+</body>
+</html>
+
