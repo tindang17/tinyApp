@@ -4,18 +4,17 @@
   <title>TinyApp</title>
 </head>
 <body>
-  <header>
-  </header>
-     <form action="/urls/<%= shortURL %>" method="POST" style="margin:150px;">
-      <h2>shortURL: <%= shortURL %></h2>
-      <p>
-        <label for="longURL">LongURL</label>
-        <input id="longURL" type="text" name="longURL" value="<%= longURL %>" style="width:
-         300px">
-      </p>
-      <p>
-        <input type="submit" value="Update">
-      </p>
+  <header><% include partials/_header %></header>
+  <form action="/urls/<%= shortURL %>" method="POST" style="margin:150px;">
+    <h2>shortURL: <%= shortURL %></h2>
+  <p>
+    <label for="longURL">LongURL</label>
+    <input id="longURL" type="text" name="longURL" value="<%= longURL %>" style="width:
+      300px">
+  </p>
+  <p>
+    <input type="submit" value="Update">
+  </p>
 </body>
 </html>
 
