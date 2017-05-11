@@ -9,6 +9,9 @@
     <% for(let item in urls) { %>
       <li>
       <%= item %> : <%= urls[item] %> : <a href="">Update</a>
+        <form action="/urls/<%= item %>/delete" method="POST" >
+          <button>Delete</button>
+        </form>
       </li>
     <% } %>
     </ul>
