@@ -17,7 +17,10 @@ app.set("view engine", "ejs");
 const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({extended: true}));
 
-// Create a database
+const cookieParser = require("cookie-parser");
+app.use(cookieParser());
+
+// Create URLs routes
 
 let urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca",
@@ -58,9 +61,8 @@ app.get("/urls/:id", (req, res) => {
 app.post("/urls/:id", (req, res) => {
   const shortURL = req.params.id;
   urlDatabase[shortURL] = req.body.longURL;
-  console.log("testing: ", shortURL, urlDatabase[shortURL])
-  res.redirect("/urls")
-})
+  res.redirect("/urls");
+});
 
 // Redirect to the longURL
 app.get("/u/:shortURL", (req, res) => {
@@ -69,7 +71,12 @@ app.get("/u/:shortURL", (req, res) => {
   res.redirect(longURL);
 });
 
-
+// Login route
+app.post("/login", (req, res) => {
+  const { username } = req.body;
+  res.cookie("username", username);
+  res.redirect("/urls");
+});
 
 
 // Delete an URL
