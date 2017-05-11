@@ -6,12 +6,11 @@
 <body>
   <header>
   </header>
-     <form action="/urls/" method="POST" style="margin:150px;">
+     <form action="/urls/<%= shortURL %>" method="POST" style="margin:150px;">
+      <h2>shortURL: <%= shortURL %></h2>
       <p>
-        <label for="longURL">Short URL: <%= shortURL %></label>
-      </p>
-      <p>
-        <input id="longURL" type="text" name="longURL" value="<%= fullURL %>" style="width:
+        <label for="longURL">LongURL</label>
+        <input id="longURL" type="text" name="longURL" value="<%= longURL %>" style="width:
          300px">
       </p>
       <p>
@@ -19,3 +18,4 @@
       </p>
 </body>
 </html>
+
