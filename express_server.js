@@ -46,14 +46,16 @@ app.post("/urls", (req, res) => {
   let shortURL = generateRandomString();
   urlDatabase[shortURL] = req.body.longURL;
    // urlDatabase.(req.body);
+  console.log("Testing function", shortURL, urlDatabase[shortURL]);
   res.redirect(`/urls/${shortURL}`);
 });
-
-// app.get("/u/:shortURL", (req, res) => {
-//   const shortURL = req.params.id;
-//   let longURL = urlDatabase.shortURL;
-//   res.redirect("urls_show", longURL);
-// });
+// Redirect to the longURL
+app.get("/urls/:shortURL", (req, res) => {
+  let shortURL = req.params.shortURL;
+  let longURL = urlDatabase[shortURL];
+  console.log("Testing short and longURL", shortURL, longURL);
+  res.redirect(longURL);
+});
 
 // Retrieve url
 app.get("/urls/:id", (req, res) => {
