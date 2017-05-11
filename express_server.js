@@ -43,26 +43,34 @@ app.get("/urls/new", (req, res) => {
 });
 
 app.post("/urls", (req, res) => {
-  let shortURL = generateRandomString();
+  const shortURL = generateRandomString();
   urlDatabase[shortURL] = req.body.longURL;
-   // urlDatabase.(req.body);
-  console.log("Testing function", shortURL, urlDatabase[shortURL]);
-  res.redirect(`/urls/${shortURL}`);
-});
-// Redirect to the longURL
-app.get("/urls/:shortURL", (req, res) => {
-  let shortURL = req.params.shortURL;
-  let longURL = urlDatabase[shortURL];
-  console.log("Testing short and longURL", shortURL, longURL);
-  res.redirect(longURL);
+  res.redirect("/urls");
 });
 
 // Retrieve url
 app.get("/urls/:id", (req, res) => {
   const shortURL = req.params.id;
-  let templateVars = { shortURL, fullURL: urlDatabase[shortURL] };
+  let templateVars = { shortURL, longURL: urlDatabase[shortURL] };
   res.render("urls_show", templateVars);
 });
+// Update an URL
+app.post("/urls/:id", (req, res) => {
+  const shortURL = req.params.id;
+  urlDatabase[shortURL] = req.body.longURL;
+  console.log("testing: ", shortURL, urlDatabase[shortURL])
+  res.redirect("/urls")
+})
+
+// Redirect to the longURL
+app.get("/u/:shortURL", (req, res) => {
+  const shortURL = req.params.shortURL;
+  let longURL = urlDatabase[shortURL];
+  res.redirect(longURL);
+});
+
+
+
 
 // Delete an URL
 app.post("/urls/:id/delete", (req, res) => {
