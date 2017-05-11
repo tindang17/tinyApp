@@ -20,6 +20,10 @@ app.use(bodyParser.urlencoded({extended: true}));
 const cookieParser = require("cookie-parser");
 app.use(cookieParser());
 
+app.use((req, res, next) => {
+  res.locals.username = req.cookies.username
+  next();
+})
 // Create URLs routes
 
 let urlDatabase = {
@@ -34,14 +38,17 @@ app.get("/hello", (req, res) => {
 
 // Search urls
 app.get("/urls", (req, res) => {
-  let templateVars = { urls:
-    urlDatabase
+  const { username } = req.cookies
+  let templateVars = {
+    urls: urlDatabase,
+    username
   };
   res.render("urls_index", templateVars);
 });
 // Create Url
 
 app.get("/urls/new", (req, res) => {
+  const { username } = req.cookies
   res.render("urls_new");
 });
 
@@ -54,7 +61,12 @@ app.post("/urls", (req, res) => {
 // Retrieve url
 app.get("/urls/:id", (req, res) => {
   const shortURL = req.params.id;
-  let templateVars = { shortURL, longURL: urlDatabase[shortURL] };
+  const { username } = req.cookies
+  let templateVars = {
+    shortURL,
+    longURL: urlDatabase[shortURL],
+    username
+  };
   res.render("urls_show", templateVars);
 });
 // Update an URL
@@ -78,7 +90,12 @@ app.post("/login", (req, res) => {
   res.redirect("/urls");
 });
 
-
+// Logout and clear cookies
+app.post("/logout", (req, res) => {
+  const { username } = req.body;
+  res.clearCookie("username", username);
+  res.redirect("/urls");
+});
 // Delete an URL
 app.post("/urls/:id/delete", (req, res) => {
     delete urlDatabase[req.params.id];
