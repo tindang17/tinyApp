@@ -6,8 +6,16 @@
 <body>
   <header>
   </header>
-  <li>
-    <%= fullURL %>/<%= shortURL %>
-  </li>
+     <form action="/urls/" method="POST" style="margin:150px;">
+      <p>
+        <label for="longURL">Short URL: <%= shortURL %></label>
+      </p>
+      <p>
+        <input id="longURL" type="text" name="longURL" value="<%= fullURL %>" style="width:
+         300px">
+      </p>
+      <p>
+        <input type="submit" value="Update">
+      </p>
 </body>
 </html>
