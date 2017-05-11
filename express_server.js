@@ -31,6 +31,23 @@ let urlDatabase = {
   "9sm5xK": "http://www.google.com",
 };
 
+
+// Create users route
+const users = {
+  "userRandomID": {
+    id: "userRandomID",
+    email: "user@example.com",
+    password: "purple-monkey-dinosaur"
+  },
+ "user2RandomID": {
+    id: "user2RandomID",
+    email: "user2@example.com",
+    password: "dishwasher-funk"
+  }
+}
+
+
+
 //Routes
 app.get("/hello", (req, res) => {
   res.end("<html><body>Hello <b>World</b></body></html>\n");
@@ -94,6 +111,30 @@ app.post("/login", (req, res) => {
 app.post("/logout", (req, res) => {
   const { username } = req.body;
   res.clearCookie("username", username);
+  res.redirect("/urls");
+});
+
+
+
+
+
+// User registration
+app.get("/register", (req, res) => {
+  res.render("user_register");
+});
+
+app.post("/register", (req, res) => {
+  let userRandomID = generateRandomString();
+  const id = userRandomID;
+  const email = req.body.email;
+  const password = req.body.password;
+  users[userRandomID] = {
+    id,
+    email,
+    password
+  };
+  res.cookie("user_ID", id);
+  console.log(users);
   res.redirect("/urls");
 });
 // Delete an URL
