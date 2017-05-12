@@ -22,14 +22,10 @@ const cookieParser = require("cookie-parser");
 app.use(cookieParser());
 
 app.use((req, res, next) => {
-  res.locals.username = req.cookies.username;
+  res.locals.users = req.cookies.users;
   next();
 })
 
-app.use((req, res, next) => {
-  res.locals.email = req.cookies.email;
-  next();
-});
 // Create URLs routes
 
 let urlDatabase = {
@@ -61,17 +57,17 @@ app.get("/hello", (req, res) => {
 
 // Search urls
 app.get("/urls", (req, res) => {
-  const { username } = req.cookies
+  const { users } = req.cookies
   let templateVars = {
     urls: urlDatabase,
-    username
+    users
   };
   res.render("urls_index", templateVars);
 });
 // Create Url
 
 app.get("/urls/new", (req, res) => {
-  const { username } = req.cookies
+  const { users } = req.cookies
   res.render("urls_new");
 });
 
@@ -84,11 +80,11 @@ app.post("/urls", (req, res) => {
 // Retrieve url
 app.get("/urls/:id", (req, res) => {
   const shortURL = req.params.id;
-  const { username } = req.cookies
+  const { users } = req.cookies
   let templateVars = {
     shortURL,
     longURL: urlDatabase[shortURL],
-    username
+    users
   };
   res.render("urls_show", templateVars);
 });
@@ -108,15 +104,15 @@ app.get("/u/:shortURL", (req, res) => {
 
 // Login route
 app.post("/login", (req, res) => {
-  const { username } = req.body;
-  res.cookie("username", username);
+  const { users } = req.body;
+  res.cookie("users", users);
   res.redirect("/urls");
 });
 
 // Logout and clear cookies
 app.post("/logout", (req, res) => {
-  const { username } = req.body;
-  res.clearCookie("username", username);
+  const { users } = req.body;
+  res.clearCookie("users", users);
   res.redirect("/urls");
 });
 
