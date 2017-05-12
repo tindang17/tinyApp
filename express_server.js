@@ -22,7 +22,7 @@ const cookieParser = require("cookie-parser");
 app.use(cookieParser());
 
 app.use((req, res, next) => {
-  res.locals.users = req.cookies.users;
+  res.locals.userId = req.cookies.userId;
   next();
 })
 
@@ -35,7 +35,7 @@ let urlDatabase = {
 
 
 // Create users route
-const users = {
+let users = {
   "userRandomID": {
     id: "userRandomID",
     email: "user@example.com",
@@ -46,6 +46,26 @@ const users = {
     email: "user2@example.com",
     password: "dishwasher-funk"
   }
+}
+
+const emailExists = (email, users) => {
+  for(userId in users) {
+    if (users[userId].email === email) {
+      return true;
+    }
+  }
+  return false;
+}
+
+const validUser = (email, password) => {
+ for(userId in users) {
+    if (users[userId].email === email) {
+      if(users[userId].password === password) {
+        return userId;
+      }
+    }
+  }
+  return null;
 }
 
 
@@ -108,28 +128,24 @@ app.get("/login", (req, res) => {
 });
 
 app.post("/login", (req, res) => {
-  const { users } = req.body;
-  res.cookie("users", users);
-  res.redirect("/urls");
-});
-
-// Logout and clear cookies
-app.post("/logout", (req, res) => {
-  const { users } = req.body;
-  res.clearCookie("users", users);
-  res.redirect("/urls");
-});
-
-
-
-const emailExists = (email, users) => {
-  for(userId in users) {
-    if (users[userId].email === email) {
-      return true
-    }
+  // let user
+  // console.log(user)
+  if(!req.body.email || !req.body.password) {
+    res.status(403);
+    res.send("Where is the email or password bruh");
+    return;
   }
-}
 
+  let userId = validUser(req.body.email, req.body.password);
+  console.log(userId);
+
+  if(userId) {
+    res.cookie("userId", userId);
+    res.redirect("/urls");
+  } else {
+    res.status(403).send("Email or password is not valid <br><a href='/login'>return to login page</a>");
+  }
+});
 // User registration
 app.get("/register", (req, res) => {
   res.render("user_register");
@@ -159,9 +175,19 @@ app.post("/register", (req, res) => {
     email,
     password
   };
-  res.cookie("user_ID", id);
+  res.cookie("userId", id);
   res.redirect("/urls");
 });
+
+// Logout and clear cookies
+app.post("/logout", (req, res) => {
+  res.clearCookie("userId");
+  res.redirect("/urls");
+});
+
+
+
+
 // Delete an URL
 app.post("/urls/:id/delete", (req, res) => {
     delete urlDatabase[req.params.id];
