@@ -1,14 +1,14 @@
 <div class="header clearfix">
   <nav class="navbar navbar-default" role="navigation">
-    <% if (locals.username) { %>
-      <p>Hello, <%= locals.username %>
+    <% if (locals.users) { %>
+      <p>Hello, <%= locals.users %>
         <form action="/logout" method="POST">
-          <input id="locals.username" type="submit" value="logout">
+          <input id="locals.users" type="submit" value="logout">
       </p>
    <% } else { %>
       <form action="/login" method="POST">
-        <label for="username">username:</label>
-        <input id="username" type="text" name="username">
+        <label for="users">users:</label>
+        <input id="users" type="text" name="users">
         <input type="submit" value="login">
       </form>
     <% } %>
