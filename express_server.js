@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const PORT = process.env.PORT || 8080
+// const uuid = require("uuid")
 
 // Function to generate randone string
 
@@ -21,9 +22,14 @@ const cookieParser = require("cookie-parser");
 app.use(cookieParser());
 
 app.use((req, res, next) => {
-  res.locals.username = req.cookies.username
+  res.locals.username = req.cookies.username;
   next();
 })
+
+app.use((req, res, next) => {
+  res.locals.email = req.cookies.email;
+  next();
+});
 // Create URLs routes
 
 let urlDatabase = {
@@ -116,25 +122,44 @@ app.post("/logout", (req, res) => {
 
 
 
-
+const emailExists = (email, users) => {
+  for(userId in users) {
+    if (users[userId].email === email) {
+      return true
+    }
+  }
+}
 
 // User registration
 app.get("/register", (req, res) => {
   res.render("user_register");
 });
-
+//  Adding new user to users database
 app.post("/register", (req, res) => {
-  let userRandomID = generateRandomString();
-  const id = userRandomID;
+  const randomID = generateRandomString();
+  const id = randomID;
   const email = req.body.email;
   const password = req.body.password;
-  users[userRandomID] = {
+  const doesEmailExist = emailExists(email, users);
+  // Response for when user forget to enter email or password
+  if (!password || !email) {
+    res.status(404);
+    res.send('please enter your email or password');
+    return;
+  }
+
+  // Response for when eamil has already existed
+  if (doesEmailExist) {
+    res.status(404);
+    res.send('your email has been registered in our system');
+    return;
+  }
+  users[randomID] = {
     id,
     email,
     password
   };
   res.cookie("user_ID", id);
-  console.log(users);
   res.redirect("/urls");
 });
 // Delete an URL
