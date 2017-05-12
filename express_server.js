@@ -103,6 +103,10 @@ app.get("/u/:shortURL", (req, res) => {
 });
 
 // Login route
+app.get("/login", (req, res) => {
+  res.render("login");
+});
+
 app.post("/login", (req, res) => {
   const { users } = req.body;
   res.cookie("users", users);
