@@ -77,7 +77,7 @@ app.get("/hello", (req, res) => {
 
 // Search urls
 app.get("/urls", (req, res) => {
-  const { users } = req.cookies
+  const { users } = req.cookies;
   let templateVars = {
     urls: urlDatabase,
     users
@@ -87,8 +87,18 @@ app.get("/urls", (req, res) => {
 // Create Url
 
 app.get("/urls/new", (req, res) => {
-  const { users } = req.cookies
+  //res.cookie("userId", userId);
+  if(req.cookies.userId==undefined){
+    res.redirect("/login");
+  }else{
+  const { users } = req.cookies;
   res.render("urls_new");
+  }
+
+  // if(req.cookies === undefined) {
+  // console.log(req.cookies === undefined);
+  //   return;
+  // }
 });
 
 app.post("/urls", (req, res) => {
@@ -100,7 +110,7 @@ app.post("/urls", (req, res) => {
 // Retrieve url
 app.get("/urls/:id", (req, res) => {
   const shortURL = req.params.id;
-  const { users } = req.cookies
+  const { users } = req.cookies;
   let templateVars = {
     shortURL,
     longURL: urlDatabase[shortURL],
@@ -128,8 +138,6 @@ app.get("/login", (req, res) => {
 });
 
 app.post("/login", (req, res) => {
-  // let user
-  // console.log(user)
   if(!req.body.email || !req.body.password) {
     res.status(403);
     res.send("Where is the email or password bruh");
@@ -184,8 +192,6 @@ app.post("/logout", (req, res) => {
   res.clearCookie("userId");
   res.redirect("/urls");
 });
-
-
 
 
 // Delete an URL
