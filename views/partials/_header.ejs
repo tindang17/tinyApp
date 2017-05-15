@@ -1,9 +1,10 @@
 <div class="header clearfix">
   <nav class="navbar navbar-default" role="navigation">
-    <% if (locals.userId) { %>
+    <% if (user) { %>
       <p>Hello,
         <form action="/logout" method="POST">
           <input id="locals.users" type="submit" value="logout">
+        </form>
       </p>
     <% } else { %>
       <form action="/login" method="GET">

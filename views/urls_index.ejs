@@ -6,13 +6,13 @@
 <body>
   <header><% include partials/_header %></header>
     <ul>
-    <% for(let item in urls) { %>
+    <% for(let key in urls) { %>
       <li>
-      <%= item %> : <%= urls[item] %> :
-        <form action="/urls/<%= item %>" method="GET" >
+      <%= key %> : <%= urls[key].longURL %> :
+        <form action="/urls/<%= key %>" method="GET" >
           <button>Edit</button>
         </form>
-        <form action="/urls/<%= item %>/delete" method="POST" >
+        <form action="/urls/<%= key %>/delete" method="POST" >
           <button>Delete</button>
         </form>
       </li>
