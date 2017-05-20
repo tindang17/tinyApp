@@ -1,7 +1,7 @@
 <div class="header clearfix">
   <nav class="navbar navbar-default" role="navigation">
     <% if (user) { %>
-      <p>Hello,
+      <p>Hello, <%= user.email %> </p>
         <form action="/logout" method="POST">
           <input id="locals.users" type="submit" value="logout">
         </form>
