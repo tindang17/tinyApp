@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>TinyApp</title>
+</head>
+<body>
+  <header><% include partials/_header %></header>
+    <h3>Hey there, interested in shortening the urls of your favorite website? You can that do that by register for an account</h3>
+    <ul>
+    <% for(let shortURL in urls) { %>
+      <li>
+      <%= shortURL %> : <%= urls[shortURL].longURL %>
+      </li>
+    <% } %>
+    </ul>
+</body>
+</html>
