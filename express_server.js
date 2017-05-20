@@ -2,8 +2,10 @@ const express = require("express");
 const app = express();
 const PORT = process.env.PORT || 8080
 const bcrypt = require("bcrypt");
+const { hashSync, compareSync } = require("bcrypt");
 const password = "purple-monkey-dinosaur";
-const hashed_password = bcrypt.hashSync(password, 10);
+const hashed_password = hashSync(password, 10);
+
 // const uuid = require("uuid")
 
 // Function to generate randone string
@@ -72,7 +74,7 @@ const emailExists = (email, users) => {
 const validUser = (email, password) => {
  for(userId in users) {
     if (users[userId].email === email) {
-      if(users[userId].password === password) {
+      if(bcrypt.compareSync(password, users[userId].password)) {
         return userId;
       }
     }
@@ -105,15 +107,11 @@ app.get("/urls", (req, res) => {
   let templateVars = {
     urls: userUrls
   };
-  // if( === req.cookies.userId) {
-  //   return getUsersUrls();
-  // }
   res.render("urls_index", templateVars);
 });
-// Create Url
 
+// Create Url
 app.get("/urls/new", (req, res) => {
-  //res.cookie("userId", userId);
   if(req.cookies.userId == undefined){
     res.redirect("/login");
   }else{
@@ -155,6 +153,7 @@ app.get("/urls/:id", (req, res) => {
 // Update an URL
 app.post("/urls/:id", (req, res) => {
   const shortURL = req.params.id;
+  urlDatabase[shortURL].longURL = req.body.longURL;
   res.redirect("/urls");
 });
 
@@ -191,7 +190,7 @@ app.post("/login", (req, res) => {
 app.get("/register", (req, res) => {
   res.render("user_register");
 });
-//  Adding new user to users database
+// Adding new user to users database
 app.post("/register", (req, res) => {
   const randomID = generateRandomString();
   const id = randomID;
@@ -214,7 +213,7 @@ app.post("/register", (req, res) => {
   users[randomID] = {
     id,
     email,
-    password
+    password: bcrypt.hashSync(password, 10)
   };
   res.cookie("userId", id);
   res.redirect("/urls");
