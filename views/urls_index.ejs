@@ -8,7 +8,8 @@
     <ul>
     <% for(let key in urls) { %>
       <li>
-      <%= key %> : <%= urls[key].longURL %> :
+
+      <%= key %> : <%= urls[key] %>
         <form action="/urls/<%= key %>" method="GET" >
           <button>Edit</button>
         </form>

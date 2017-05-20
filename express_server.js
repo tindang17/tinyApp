@@ -1,6 +1,9 @@
 const express = require("express");
 const app = express();
 const PORT = process.env.PORT || 8080
+const bcrypt = require("bcrypt");
+const password = "purple-monkey-dinosaur";
+const hashed_password = bcrypt.hashSync(password, 10);
 // const uuid = require("uuid")
 
 // Function to generate randone string
@@ -152,7 +155,6 @@ app.get("/urls/:id", (req, res) => {
 // Update an URL
 app.post("/urls/:id", (req, res) => {
   const shortURL = req.params.id;
-  urlDatabase[shortURL].longURL = req.body.longURL; //longURL is now a part of shortURL object
   res.redirect("/urls");
 });
 
