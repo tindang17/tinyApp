@@ -96,6 +96,9 @@ app.get("/hello", (req, res) => {
   res.end("<html><body>Hello <b>World</b></body></html>\n");
 });
 
+
+
+
 // Search urls
 app.get("/urls", (req, res) => {
   if(!req.cookies.userId) {
@@ -130,6 +133,13 @@ app.post("/urls", (req, res) => {
   res.redirect("/urls");
 });
 
+// Everyone can see urls
+app.get("/", (req, res) => {
+  let templateVars = {
+    urls: urlDatabase
+  };
+  res.render("front-page", templateVars);
+})
 // Retrieve url
 app.get("/urls/:id", (req, res) => {
   if(!req.cookies.userId) {
