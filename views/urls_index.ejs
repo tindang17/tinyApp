@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <title>TinyApp</title>
-</head>
-<body>
+  <head>
+    <title>TinyApp</title>
+  </head>
+  <body style="font-size:20px; padding:10px;">
   <header><% include partials/_header %></header>
     <ul>
     <% for(let key in urls) { %>
       <li>
-
       <%= key %> : <%= urls[key] %>
         <form action="/urls/<%= key %>" method="GET" >
           <button>Edit</button>
@@ -19,6 +18,9 @@
       </li>
     <% } %>
     </ul>
+    <form action="/urls/new" method="GET" >
+      <button>Create</button>
+    </form>
 </body>
 </html>
 
