@@ -7,6 +7,7 @@ TinyApp is a full stack web application built with Node and Express that allows 
 In this project, I also created a front page for the website that shows all the short URLs that other users have created to the public.
 
 ##Screenshots
+
 Note: users can only have access to their own urls
 !["page of user tindang1710@gmail.com"](https://github.com/tindang17/tinyApp/blob/master/docs/Screen%20Shot%202017-05-21%20at%208.36.28%20PM.png)
 !["page of user tind@sfu.ca"](https://github.com/tindang17/tinyApp/blob/master/docs/Screen%20Shot%202017-05-21%20at%208.35.29%20PM.png)
