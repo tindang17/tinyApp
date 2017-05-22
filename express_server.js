@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const PORT = process.env.PORT || 8080
+const PORT = process.env.PORT || 8080;
 
 // installing bcrypt package
 const bcrypt = require("bcrypt");
@@ -19,6 +19,7 @@ app.set("view engine", "ejs");
 //Middlewares
 const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({extended: true}));
+
 // cookies session
 const cookieSession = require("cookie-session");
 app.use(cookieSession({
@@ -28,15 +29,14 @@ app.use(cookieSession({
 
 app.use((req, res, next) => {
   res.locals.userId = req.session.userId;
-  res.locals.user = users[req.session.userId]
+  res.locals.user = users[req.session.userId];
   next();
-})
-
+});
 // Create URLs routes
 
 let urlDatabase = {
   "b2xVn2": {
-    userId : "b2ba45",
+    userId: "b2ba45",
     longURL: "http://www.lighthouselabs.ca",
     shortURL: "b2xVn2"
   },
@@ -47,7 +47,6 @@ let urlDatabase = {
   }
 };
 
-
 // Create users route
 let users = {
   "b2ba45": {
@@ -55,7 +54,7 @@ let users = {
     email: "user@example.com",
     password: "purple-monkey-dinosaur"
   },
- "lk24aa": {
+  "lk24aa": {
     userId: "lk24aa",
     email: "user2@example.com",
     password: "dishwasher-funk"
@@ -70,10 +69,11 @@ const emailExists = (email, users) => {
     }
   }
   return false;
-}
+};
+
 // function to verify if a user has entered correct email and password
 const validUser = (email, password) => {
- for(userId in users) {
+  for(userId in users) {
     if (users[userId].email === email) {
       if(bcrypt.compareSync(password, users[userId].password)) {
         return userId;
@@ -81,7 +81,8 @@ const validUser = (email, password) => {
     }
   }
   return null;
-}
+};
+
 // function to assign user's urls to their own account
 function getUsersUrls(userId) {
   let userUrls = {};
@@ -92,18 +93,17 @@ function getUsersUrls(userId) {
   }
   return userUrls;
 }
+
 //Routes
 app.get("/hello", (req, res) => {
   res.end("<html><body>Hello <b>World</b></body></html>\n");
 });
 
 
-
-
 // Search urls
 app.get("/urls", (req, res) => {
   if(!req.session.userId) {
-    res.send("Please log in to see your urls")
+    res.send("Please log in to see your urls");
     return;
   }
   const user = users[req.session.userId];
@@ -117,7 +117,6 @@ app.get("/urls", (req, res) => {
 // Create Url
 app.get("/urls/new", (req, res) => {
   if(req.session.userId == undefined){
-    // console.log("Tin", req.session.userId)
     res.redirect("/login");
   }else{
     const { users } = req.session;
@@ -141,7 +140,7 @@ app.get("/", (req, res) => {
     urls: urlDatabase
   };
   res.render("front-page", templateVars);
-})
+});
 // Retrieve url
 app.get("/urls/:id", (req, res) => {
   if(!req.session.userId) {
@@ -223,6 +222,7 @@ app.post("/register", (req, res) => {
     res.send('your email has been registered in our system');
     return;
   }
+
   // if user has not been registered, save the information into the database
   users[randomID] = {
     id,
@@ -243,7 +243,7 @@ app.post("/logout", (req, res) => {
 app.post("/urls/:id/delete", (req, res) => {
   // if users are not logged in, they can't delete the URLs
   if(!req.session.userId) {
-    res.send("You are not logged in")
+    res.send("You are not logged in");
     return;
   }
   const url = urlDatabase[req.params.id];
@@ -256,8 +256,6 @@ app.post("/urls/:id/delete", (req, res) => {
   delete urlDatabase[req.params.id];
   res.redirect('/urls');
 });
-
-
 
 
 app.listen(PORT, () => {
