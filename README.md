@@ -1,13 +1,21 @@
-# GitHub Avatar Downloader
+# TinyApp project
 
-## Problem Statement
+TinyApp is a full stack web application built with Node and Express that allows users to shorten long URLs (à la bit.ly)
 
-Given a GitHub repository name and owner, download all the contributors' profile images and save them to a subdirectory, `avatars/`.
+## Final Products
 
-## Expected Usage
+In this project, I also created a front page for the website that shows all the short URLs that other users have created to the public.
 
-This program should be executed from the command line, in the following manner:
+##Dependencies
+- Node.js
+- Express
+- EJS
+- bcrypt
+- body-parser
+- cookie-session
 
-`node download_avatars.js jquery jquery`
+##Getting started
 
-... (whatever else you'd like to include)
+- Install all the dependencies (using `npm install <package> --save` command).
+
+- Run the development web server using `node express_server.js` command.
