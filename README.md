@@ -6,7 +6,7 @@ TinyApp is a full stack web application built with Node and Express that allows 
 
 In this project, I also created a front page for the website that shows all the short URLs that other users have created to the public.
 
-##Screenshots
+## Screenshots
 
 Note: users can only have access to their own urls
 !["page of user tindang1710@gmail.com"](https://github.com/tindang17/tinyApp/blob/master/docs/Screen%20Shot%202017-05-21%20at%208.36.28%20PM.png)
@@ -17,7 +17,7 @@ Note: users can only have access to their own urls
 !["Authentication fail message"](https://github.com/tindang17/tinyApp/blob/master/docs/Screen%20Shot%202017-05-21%20at%208.37.19%20PM.png)
 !["user can update their own short URLs, e.g, changing the associated long URL while the short URL remains the same"](https://github.com/tindang17/tinyApp/blob/master/docs/Screen%20Shot%202017-05-21%20at%208.37.38%20PM.png)
 
-##Dependencies
+## Dependencies
 - Node.js
 - Express
 - EJS
@@ -25,7 +25,7 @@ Note: users can only have access to their own urls
 - body-parser
 - cookie-session
 
-##Getting started
+## Getting started
 
 - Install all the dependencies (using `npm install <package> --save` command).
 
