@@ -8,10 +8,9 @@ const { hashSync, compareSync } = require("bcrypt");
 const password = "purple-monkey-dinosaur";
 const hashed_password = hashSync(password, 10);
 
-// Function to generate randone string
-function generateRandomString() {
-  return Math.random().toString(36).substr(2, 6);
-}
+// require modules
+const urlsRoutes = require("./router/urlsRoutes");
+const generateRandomString = require("./functions/randomString")
 
 // Configuration
 app.set("view engine", "ejs");
@@ -63,7 +62,7 @@ let users = {
 
 // function to verify if email has alreay been registered in the system
 const emailExists = (email, users) => {
-  for(userId in users) {
+  for(const userId in users) {
     if (users[userId].email === email) {
       return true;
     }
@@ -73,7 +72,7 @@ const emailExists = (email, users) => {
 
 // function to verify if a user has entered correct email and password
 const validUser = (email, password) => {
-  for(userId in users) {
+  for(const userId in users) {
     if (users[userId].email === email) {
       if(bcrypt.compareSync(password, users[userId].password)) {
         return userId;
@@ -83,91 +82,11 @@ const validUser = (email, password) => {
   return null;
 };
 
-// function to assign user's urls to their own account
-function getUsersUrls(userId) {
-  let userUrls = {};
-  for(let key in urlDatabase) {
-    if(urlDatabase[key].userId === userId) {
-      userUrls[key] = urlDatabase[key].longURL;
-    }
-  }
-  return userUrls;
-}
-
-//Routes
-app.get("/hello", (req, res) => {
-  res.end("<html><body>Hello <b>World</b></body></html>\n");
-});
-
-
-// Search urls
-app.get("/urls", (req, res) => {
-  if(!req.session.userId) {
-    res.send("Please log in to see your urls");
-    return;
-  }
-  const user = users[req.session.userId];
-  let userUrls = getUsersUrls(req.session.userId);
-  let templateVars = {
-    urls: userUrls
-  };
-  res.render("urls_index", templateVars);
-});
-
-// Create Url
-app.get("/urls/new", (req, res) => {
-  if(req.session.userId == undefined){
-    res.redirect("/login");
-  }else{
-    const { users } = req.session;
-    res.render("urls_new");
-    return;
-  }
-});
-
-app.post("/urls", (req, res) => {
-  const shortURL = generateRandomString();
-  urlDatabase[shortURL] = {
-    longURL: req.body.longURL,
-    userId: req.session.userId
-  };
-  res.redirect("/urls");
-});
-
-// Everyone can see urls
+// Routes for urls
 app.get("/", (req, res) => {
-  let templateVars = {
-    urls: urlDatabase
-  };
-  res.render("front-page", templateVars);
-});
-// Retrieve url
-app.get("/urls/:id", (req, res) => {
-  if(!req.session.userId) {
-    res.redirect("/urls");
-    return;
-  }
-  const shortURL = req.params.id;
-  let templateVars = {
-    shortURL,
-    longURL: urlDatabase[shortURL].longURL,
-    userId: req.session.userId
-  };
-  // console.log("longURL", templateVars.longURL)
-  if(urlDatabase[shortURL].userId != req.session.userId) {
-    // console.log("tin", urlDatabase[shortURL].userId != req.cookies.userId)
-    res.redirect("/urls");
-  } else {
-    res.render("urls_show", templateVars);
-    return;
-  }
-});
-// Update an URL
-app.post("/urls/:id", (req, res) => {
-  const shortURL = req.params.id;
-  urlDatabase[shortURL].longURL = req.body.longURL;
   res.redirect("/urls");
 });
+app.use("/urls", urlsRoutes(urlDatabase, users))
 
 // Redirect to the longURL
 app.get("/u/:shortURL", (req, res) => {
@@ -204,25 +123,23 @@ app.get("/register", (req, res) => {
 });
 // Adding new user to users database
 app.post("/register", (req, res) => {
-  const randomID = generateRandomString();
-  const id = randomID;
+  const id = generateRandomString();
   const email = req.body.email;
   const password = req.body.password;
   const doesEmailExist = emailExists(email, users);
   // Response for when user forget to enter email or password
   if (!password || !email) {
     res.status(404);
-    res.send('please enter your email or password');
+    res.send('please enter your email and password');
     return;
   }
 
-  // Response for when eamil has already existed
+  // Response for when email has already existed
   if (doesEmailExist) {
     res.status(404);
     res.send('your email has been registered in our system');
     return;
   }
-
   // if user has not been registered, save the information into the database
   users[randomID] = {
     id,
