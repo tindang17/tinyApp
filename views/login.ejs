@@ -1,18 +1,22 @@
 <!DOCTYPE>
 <html lang="en">
-<body>
-  <form action="/login" method="POST">
-    <p>
-      <label for="email">email</label>
-      <input id="email" type="email" name="email">
-    </p>
-    <p>
-      <label for="password">password</label>
-      <input id="password" type="password" name="password">
-    </p>
-    <p>
-      <input type="submit" value="login">
-    </p>
-  </form>
-</body>
+  <body>
+    <header>Login</header>
+    <form action="/login" method="POST">
+      <p>
+        <label for="email">email</label>
+        <input id="email" type="email" name="email">
+      </p>
+      <p>
+        <label for="password">password</label>
+        <input id="password" type="password" name="password">
+      </p>
+      <p>
+        <input type="submit" value="login" style="float: left">
+      </p>
+    </form>
+    <form action="/register" method="GET">
+      <input type="submit" value="register" style="float: left">
+    </form>
+  </body>
 </html>

@@ -9,18 +9,22 @@
     <% for(let key in urls) { %>
       <li>
       <%= key %> : <%= urls[key] %>
-        <form action="/urls/<%= key %>" method="GET" >
-          <button>Edit</button>
-        </form>
-        <form action="/urls/<%= key %>/delete" method="POST" >
-          <button>Delete</button>
-        </form>
+        <div>
+          <form action="/urls/<%= key %>" method="GET" >
+            <button style="float: left">Edit</button>
+          </form>
+          <form action="/urls/<%= key %>/delete" method="POST" >
+            <button style="float: left">Delete</button>
+          </form>
+        </div>
       </li>
     <% } %>
     </ul>
-    <form action="/urls/new" method="GET" >
-      <button>Create</button>
-    </form>
+    <div>
+      <form action="/urls/new" method="GET" >
+        <button>Create</button>
+      </form>
+    </div>
 </body>
 </html>
 

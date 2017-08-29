@@ -8,7 +8,7 @@ module.exports = function (urlDatabase, users) {
   
   router.get("/", (req, res) => {
     if(!req.session.userId) {
-      res.send("Please log in to see your urls");
+      res.send("Please log in to see your urls <br><a href='/login'>login page</a>");
       return;
     }
     const user = users[req.session.userId];
@@ -63,6 +63,24 @@ module.exports = function (urlDatabase, users) {
     const shortURL = req.params.id;
     urlDatabase[shortURL].longURL = req.body.longURL;
     res.redirect("/urls");
+  });
+  
+  // Delete existing URLs
+  router.post("/:id/delete", (req, res) => {
+  // if users are not logged in, they can't delete the URLs
+    if(!req.session.userId) {
+      res.send("You are not logged in");
+      return;
+    }
+    const url = urlDatabase[req.params.id];
+    // if the users don't own the urls, they can't delete it.
+    if(req.session.userId != url.userId) {
+      res.send("You do not own that url");
+      return;
+    }
+    // delete req is approved
+    delete urlDatabase[req.params.id];
+    res.redirect('/urls');
   });
 
   

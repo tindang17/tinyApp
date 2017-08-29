@@ -2,6 +2,7 @@
 <html lang="en">
   <head></head>
   <body>
+    <header>Register</header>
     <form action="/register" method="POST">
       <p>
         <label for="email">email</label>
@@ -12,8 +13,11 @@
         <input id="password" type="password" name="password">
       </p>
       <p>
-        <input type="submit" value="register">
+        <input type="submit" value="register" style="float: left">
       </p>
+    </form>
+    <form action="/login" method="GET">
+      <input type="submit" value="login" style="float: left">
     </form>
   </body>
 </html>
